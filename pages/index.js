@@ -14,33 +14,31 @@ export default function Home() {
         E-Commercify
       </div>
       <div className="container mx-auto mt-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 mx-2">
           <Card
-            buttonColor="red-800"
-            title="Admin"
             content={<>
-              Admin としてログインすると、Seller の管理、Buyer の管理、
+              Admin としてログインすると、プラットフォームの管理者として、
+              Seller の管理、Buyer の管理、
               支払いの管理ができます。
             </>}
             buttonText="Login as Admin"
+            buttonTheme="red"
           />
           <Card
-            title="Seller"
             content={<>
-              Seller としてログインすると、商品の管理、
-              関連する Buyer と支払いの管理ができます。
+              Seller としてログインすると、販売者として、
+              商品の管理、支払いの閲覧・返金処理ができます。
             </>}
             buttonText="Login as Seller"
-            buttonColor="blue-800"
+            buttonTheme="blue"
           />
           <Card
-            title="Buyer"
             content={<>
-              Buyer としてログインすると、商品の購入、
-              カード情報の管理ができます。
+              Buyer としてログインすると、購入者として、
+              商品の購入、カード情報の管理ができます。
             </>}
             buttonText="Login as Buyer"
-            buttonColor="green-800"
+            buttonTheme="green"
           />
         </div>
       </div>
@@ -48,20 +46,34 @@ export default function Home() {
   )
 }
 
-function Card({ title, content, buttonText, buttonColor }) {
+function Card({ content, buttonText, buttonTheme }) {
   return (
-    <div className="rounded p-2 bg-gray-100">
-      <div className="p-2 font-semibold rounded-t">
-        {title}
-      </div >
-      <div className="p-2 rounded">
-        <div>{content}</div>
-        <div className="mt-4 flex">
-          <button className={"rounded py-1 px-2 flex-grow text-white bg-" + buttonColor}>
-            {buttonText}
-          </button>
+    <div className="rounded p-2 pb-4 bg-gray-100 hover:bg-gray-200 relative flex-1">
+      <div className="p-2 rounded mb-8">
+        {content}
+      </div>
+      <div className="absolute bottom-4 left-0 w-full">
+        <div className="px-4">
+          <Button theme={buttonTheme}>{buttonText}</Button>
         </div>
       </div>
     </div >
+  )
+}
+
+function Button({ children, theme }) {
+  return (
+    <button className={
+      [
+        "rounded py-1 px-2 flex-grow text-white w-full",
+        {
+          "red": "bg-red-800 hover:bg-red-700",
+          "green": "bg-green-800 hover:bg-green-700",
+          "blue": "bg-blue-800 hover:bg-blue-700"
+        }[theme]
+      ].join(" ")
+    }>
+      {children}
+    </button>
   )
 }
