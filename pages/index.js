@@ -1,18 +1,16 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import Layout from '../components/layout'
+import Navbar from '../components/navbar'
+import { classnames } from 'tailwindcss-classnames'
 
 export default function Home() {
   return (
-    <div className="text-gray-900 font-light">
+    <Layout>
       <Head>
-        <title>E-Commercify</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="EC platform example" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Commercify</title>
       </Head>
-      <div className="w-screen bg-black text-white px-4 py-2 font-sans text-xl">
-        E-Commercify
-      </div>
+      <Navbar theme="black" />
       <div className="container mx-auto mt-4">
         <div className="flex flex-col sm:flex-row gap-4 mx-2">
           <Card
@@ -23,6 +21,7 @@ export default function Home() {
             </>}
             buttonText="Login as Admin"
             buttonTheme="red"
+            buttonLink="/admin/"
           />
           <Card
             content={<>
@@ -31,6 +30,7 @@ export default function Home() {
             </>}
             buttonText="Login as Seller"
             buttonTheme="blue"
+            buttonLink="/sellers/"
           />
           <Card
             content={<>
@@ -39,14 +39,15 @@ export default function Home() {
             </>}
             buttonText="Login as Buyer"
             buttonTheme="green"
+            buttonLink="/"
           />
         </div>
       </div>
-    </div >
+    </Layout>
   )
 }
 
-function Card({ content, buttonText, buttonTheme }) {
+function Card({ content, buttonText, buttonTheme, buttonLink }) {
   return (
     <div className="rounded p-2 pb-4 bg-gray-100 hover:bg-gray-200 relative flex-1">
       <div className="p-2 rounded mb-8">
@@ -54,26 +55,26 @@ function Card({ content, buttonText, buttonTheme }) {
       </div>
       <div className="absolute bottom-4 left-0 w-full">
         <div className="px-4">
-          <Button theme={buttonTheme}>{buttonText}</Button>
+          <Button theme={buttonTheme} href={buttonLink}>{buttonText}</Button>
         </div>
       </div>
     </div >
   )
 }
 
-function Button({ children, theme }) {
+function Button({ children, theme, href }) {
+  const base = classnames('block text-center rounded py-1 px-2 flex-grow text-white w-full')
+  const themed = classnames(base, {
+    'red': 'bg-red-800 hover:bg-red-700',
+    'green': 'bg-green-800 hover:bg-green-700',
+    'blue': 'bg-blue-800 hover:bg-blue-700'
+  }[theme])
+
   return (
-    <button className={
-      [
-        "rounded py-1 px-2 flex-grow text-white w-full",
-        {
-          "red": "bg-red-800 hover:bg-red-700",
-          "green": "bg-green-800 hover:bg-green-700",
-          "blue": "bg-blue-800 hover:bg-blue-700"
-        }[theme]
-      ].join(" ")
-    }>
-      {children}
-    </button>
+    <Link href={href}>
+      <a className={themed}>
+        {children}
+      </a>
+    </Link>
   )
 }
